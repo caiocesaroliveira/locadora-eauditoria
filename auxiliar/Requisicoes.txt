@@ -1,0 +1,27 @@
+Filmes
+GET - "http://localhost:5000/v1/filmes"
+GET - "http://localhost:5000/v1/filmes/{id}"
+POST - "http://localhost:5000/v1/filmes"
+PUT - "http://localhost:5000/v1/filmes/{id}"
+DELETE - "http://localhost:5000/v1/filmes/{id}"
+
+Clientes
+GET - "http://localhost:5000/v1/clientes"
+GET - "http://localhost:5000/v1/clientes/{id}"
+POST - "http://localhost:5000/v1/clientes"
+PUT - "http://localhost:5000/v1/clientes/{id}"
+DELETE - "http://localhost:5000/v1/clientes/{id}"
+
+Locacoes
+GET - "http://localhost:5000/v1/locacoes"
+GET - "http://localhost:5000/v1/locacoes/{id}"
+POST - "http://localhost:5000/v1/locacoes"
+PUT - "http://localhost:5000/v1/locacoes/{id}"
+DELETE - "http://localhost:5000/v1/locacoes/{id}"
+
+Relatorios
+GET - "http://localhost:5000/v1/relatorios/r1"
+GET - "http://localhost:5000/v1/relatorios/r2"
+GET - "http://localhost:5000/v1/relatorios/r3"
+GET - "http://localhost:5000/v1/relatorios/r4"
+GET - "http://localhost:5000/v1/relatorios/r5"

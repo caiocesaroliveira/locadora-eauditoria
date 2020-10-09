@@ -19,10 +19,20 @@ namespace backend
 
     public void ConfigureServices(IServiceCollection services)
     {
-      var ConnectionString = Configuration["ConnectionString"];
-
-      services.AddDbContext<StoreDataContext>(opt => opt.UseSqlServer(ConnectionString));
       // services.AddDbContext<StoreDataContext>(opt => opt.UseInMemoryDatabase("Locadora"));
+      var ConnectionString = Configuration["ConnectionString"];
+      services.AddDbContext<StoreDataContext>(opt => opt.UseSqlServer(ConnectionString));
+
+      services.AddCors(opt =>
+      {
+        opt.AddPolicy("CorsPolicy", policy =>
+        {
+          policy.AllowAnyHeader()
+                .AllowAnyMethod()
+                .WithOrigins("http://localhost:3000");
+        });
+      });
+
       services.AddScoped<StoreDataContext, StoreDataContext>(); //Nao cria uma nova conexao com banco
       services.AddControllers().AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
     }
@@ -37,7 +47,7 @@ namespace backend
       app.UseHttpsRedirection();
 
       app.UseRouting();
-
+      app.UseCors("CorsPolicy");
       app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>

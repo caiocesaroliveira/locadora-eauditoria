@@ -15,7 +15,9 @@ namespace Backend.Controllers
     [Route("")]
     public async Task<ActionResult<List<Cliente>>> Get([FromServices] StoreDataContext context)
     {
-      var clientes = await context.Clientes.AsNoTracking().ToListAsync();
+
+      // var clientes = await context.ClienteViewModel.FromSqlRaw(@"SELECT Cliente.Nome AS Nome FROM Cliente INNER JOIN Locacao  ON Cliente.Id = Locacao.ClienteId WHERE Locacao.Devolvido = 0 and DataDevolucao < GETDATE()").ToListAsync();
+      List<Cliente> clientes = await context.Clientes.AsNoTracking().ToListAsync();
       return clientes;
     }
 
@@ -23,7 +25,7 @@ namespace Backend.Controllers
     [Route("{id}")]
     public async Task<ActionResult<Cliente>> Get([FromServices] StoreDataContext context, int id)
     {
-      var clientes = await context.Clientes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+      Cliente clientes = await context.Clientes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
       return clientes;
     }
 
@@ -63,7 +65,7 @@ namespace Backend.Controllers
     [Route("{id}")]
     public async Task<ActionResult<Cliente>> Delete([FromServices] StoreDataContext context, int id)
     {
-      var cliente = await context.Clientes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+      Cliente cliente = await context.Clientes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
       context.Clientes.Remove(cliente);
       await context.SaveChangesAsync();
 

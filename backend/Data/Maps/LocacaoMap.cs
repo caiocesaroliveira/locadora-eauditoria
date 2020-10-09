@@ -12,6 +12,7 @@ namespace Backend.Data.Maps
       builder.HasKey(x => x.Id);
       builder.Property(x => x.DataLocacao).IsRequired().HasColumnType("datetime");
       builder.Property(x => x.DataDevolucao).IsRequired().HasColumnType("datetime");
+      builder.Property(x => x.Devolvido).IsRequired().HasColumnType("bit").HasDefaultValue(false);
       builder.HasOne(x => x.Cliente).WithMany(x => x.Locacoes);
       builder.HasOne(x => x.Filme).WithMany(x => x.Locacoes);
     }

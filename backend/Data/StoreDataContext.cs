@@ -1,5 +1,6 @@
 using Backend.Data.Maps;
 using Backend.Models;
+using Backend.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Data
@@ -14,6 +15,8 @@ namespace Backend.Data
     public DbSet<Filme> Filmes { get; set; }
     public DbSet<Locacao> Locacoes { get; set; }
 
+    public DbQuery<ClientesViewModel> ClientesViewModel { get; set; }
+    public DbQuery<FilmesViewModel> FilmesViewModel { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
       base.OnConfiguring(optionsBuilder);

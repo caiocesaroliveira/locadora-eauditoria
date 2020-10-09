@@ -15,7 +15,7 @@ namespace Backend.Controllers
     [Route("")]
     public async Task<ActionResult<List<Filme>>> Get([FromServices] StoreDataContext context)
     {
-      var filmes = await context.Filmes.AsNoTracking().ToListAsync();
+      List<Filme> filmes = await context.Filmes.AsNoTracking().ToListAsync();
       return filmes;
     }
 
@@ -23,7 +23,7 @@ namespace Backend.Controllers
     [Route("{id}")]
     public async Task<ActionResult<Filme>> Get([FromServices] StoreDataContext context, int id)
     {
-      var filmes = await context.Filmes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+      Filme filmes = await context.Filmes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
       return filmes;
     }
 
@@ -61,9 +61,9 @@ namespace Backend.Controllers
 
     [HttpDelete]
     [Route("{id}")]
-    public async Task<ActionResult<Cliente>> Delete([FromServices] StoreDataContext context, int id)
+    public async Task<ActionResult<Filme>> Delete([FromServices] StoreDataContext context, int id)
     {
-      var filme = await context.Filmes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+      Filme filme = await context.Filmes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
       context.Filmes.Remove(filme);
       await context.SaveChangesAsync();
 

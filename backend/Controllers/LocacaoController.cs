@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Backend.Controllers
     [Route("")]
     public async Task<ActionResult<List<Locacao>>> Get([FromServices] StoreDataContext context)
     {
-      var locacoes = await context.Locacoes
+      List<Locacao> locacoes = await context.Locacoes
       .Include(x => x.Cliente)
       .AsNoTracking()
       .Include(x => x.Filme)
@@ -29,7 +30,7 @@ namespace Backend.Controllers
     [Route("{id:int}")]
     public async Task<ActionResult<Locacao>> GetById([FromServices] StoreDataContext context, int id)
     {
-      var locacao = await context.Locacoes
+      Locacao locacao = await context.Locacoes
       .Include(x => x.Cliente)
       .AsNoTracking()
       .Include(x => x.Filme)
@@ -40,10 +41,10 @@ namespace Backend.Controllers
 
 
     [HttpGet]
-    [Route("clientes/{id:int}")]
+    [Route("clientes/{id}")]
     public async Task<ActionResult<List<Locacao>>> GetByClientes([FromServices] StoreDataContext context, int id)
     {
-      var locacao = await context.Locacoes
+      List<Locacao> locacao = await context.Locacoes
       .Include(x => x.Cliente)
       .AsNoTracking()
       .Where(x => x.ClienteId == id)
@@ -95,12 +96,11 @@ namespace Backend.Controllers
     [Route("{id}")]
     public async Task<ActionResult<Locacao>> Delete([FromServices] StoreDataContext context, int id)
     {
-      var locacao = await context.Locacoes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+      Locacao locacao = await context.Locacoes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
       context.Locacoes.Remove(locacao);
       await context.SaveChangesAsync();
 
       return NoContent();
     }
-
   }
 }
