@@ -6,8 +6,8 @@
 - [Locadora E-Auditoria](#locadora-e-auditoria)
   - [1. Sumário](#1-sumário)
   - [2. Sobre o projeto](#2-sobre-o-projeto)
-    - [Backend Node](#backend-node)
-    - [Frontend React](#frontend-react)
+    - [Backend .NET Core](#backend-net-core)
+    - [Frontend ReactJS](#frontend-reactjs)
   - [3. Inicialização](#3-inicialização)
   - [4. Banco de Dados](#4-banco-de-dados)
   - [5. Requisições](#5-requisições)
@@ -15,12 +15,12 @@
 ## 2. Sobre o projeto
 O projeto consiste na criação de uma locadora de filmes virtual como avaliação prática do processo seletivo da empresa [E-Auditoria](http://www.e-auditoria.com.br/)
 
-### Backend Node
+### Backend .NET Core
  - Foi criada uma api em .NET Core para a gestão de locação de filmes.
  - Nela foi implementada um CRUD completo de Clientes, Filmes e Locações além dos relatórios conforme especificado no documento de avaliação.
  - Endpoints: `v1/clientes`, `v1/filmes`, `v1/locacoes`,`v1/relatorios`;
   
-### Frontend React
+### Frontend ReactJS
  - 🚧 Em desenvolvimento
 
 
