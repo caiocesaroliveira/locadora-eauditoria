@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Backend.Data;
 using Backend.Models;
@@ -13,11 +11,18 @@ namespace Backend.Controllers
   [Route("v1/locacoes")]
   public class LocacaoController : ControllerBase
   {
+    private readonly StoreDataContext _context;
+    public LocacaoController([FromServices] StoreDataContext context)
+    {
+      _context = context;
+    }
+
+
     [HttpGet]
     [Route("")]
-    public async Task<ActionResult<List<Locacao>>> Get([FromServices] StoreDataContext context)
+    public async Task<ActionResult<List<Locacao>>> Get()
     {
-      List<Locacao> locacoes = await context.Locacoes
+      List<Locacao> locacoes = await _context.Locacoes
       .Include(x => x.Cliente)
       .AsNoTracking()
       .Include(x => x.Filme)
@@ -28,47 +33,34 @@ namespace Backend.Controllers
 
     [HttpGet]
     [Route("{id:int}")]
-    public async Task<ActionResult<Locacao>> GetById([FromServices] StoreDataContext context, int id)
+    public async Task<ActionResult<Locacao>> GetById(int id)
     {
-      Locacao locacao = await context.Locacoes
+      if (id == 0)
+        return BadRequest();
+
+      Locacao locacao = await _context.Locacoes
       .Include(x => x.Cliente)
       .AsNoTracking()
       .Include(x => x.Filme)
       .AsNoTracking()
       .FirstOrDefaultAsync(x => x.Id == id);
-      return locacao;
-    }
 
-
-    [HttpGet]
-    [Route("clientes/{id}")]
-    public async Task<ActionResult<List<Locacao>>> GetByClientes([FromServices] StoreDataContext context, int id)
-    {
-      List<Locacao> locacao = await context.Locacoes
-      .Include(x => x.Cliente)
-      .AsNoTracking()
-      .Where(x => x.ClienteId == id)
-      .Include(x => x.Filme)
-      .AsNoTracking()
-      .ToListAsync();
+      if (locacao == null)
+        return NotFound();
 
       return locacao;
     }
+
 
     [HttpPost]
     [Route("")]
-    public async Task<ActionResult<Locacao>> Post([FromServices] StoreDataContext context, [FromBody] Locacao locacao)
+    public async Task<ActionResult<Locacao>> Post([FromBody] Locacao cliente)
     {
       if (ModelState.IsValid)
       {
-        // if (locacao.Filme.Lancamento == 1)
-        //   locacao.DataDevolucao = locacao.DataLocacao.AddDays(2);
-        // else
-        //   locacao.DataDevolucao = locacao.DataLocacao.AddDays(3);
-
-        context.Locacoes.Add(locacao);
-        await context.SaveChangesAsync();
-        return locacao;
+        _context.Locacoes.Add(cliente);
+        await _context.SaveChangesAsync();
+        return cliente;
       }
       else
       {
@@ -78,13 +70,35 @@ namespace Backend.Controllers
 
     [HttpPut]
     [Route("{id}")]
-    public async Task<ActionResult<Locacao>> Put([FromServices] StoreDataContext context, [FromBody] Locacao locacao, int id)
+    public async Task<ActionResult<Locacao>> Put([FromBody] Locacao cliente, int id)
     {
       if (ModelState.IsValid)
       {
-        context.Entry(locacao).State = EntityState.Modified;
-        await context.SaveChangesAsync();
-        return locacao;
+        if (id != cliente.Id)
+          return BadRequest();
+
+        if (!await LocacaoExists(id))
+          return NotFound();
+
+        _context.Entry(cliente).State = EntityState.Modified;
+
+        try
+        {
+          await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+          if (!await LocacaoExists(id))
+          {
+            return NotFound();
+          }
+          else
+          {
+            throw;
+          }
+        }
+
+        return NoContent();
       }
       else
       {
@@ -94,13 +108,20 @@ namespace Backend.Controllers
 
     [HttpDelete]
     [Route("{id}")]
-    public async Task<ActionResult<Locacao>> Delete([FromServices] StoreDataContext context, int id)
+    public async Task<ActionResult<Locacao>> Delete(int id)
     {
-      Locacao locacao = await context.Locacoes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-      context.Locacoes.Remove(locacao);
-      await context.SaveChangesAsync();
+      if (id == 0)
+        return BadRequest();
+
+      Locacao cliente = await _context.Locacoes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
+      _context.Locacoes.Remove(cliente);
+      await _context.SaveChangesAsync();
 
       return NoContent();
     }
+
+    private async Task<bool> LocacaoExists(int id) => await _context.Locacoes.AnyAsync(e => e.Id == id);
+
   }
 }

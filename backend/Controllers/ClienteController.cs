@@ -11,32 +11,43 @@ namespace Backend.Controllers
   [Route("v1/clientes")]
   public class ClienteController : ControllerBase
   {
+    private readonly StoreDataContext _context;
+    public ClienteController([FromServices] StoreDataContext context)
+    {
+      _context = context;
+    }
+
     [HttpGet]
     [Route("")]
-    public async Task<ActionResult<List<Cliente>>> Get([FromServices] StoreDataContext context)
+    public async Task<ActionResult<List<Cliente>>> Get()
     {
-
-      // var clientes = await context.ClienteViewModel.FromSqlRaw(@"SELECT Cliente.Nome AS Nome FROM Cliente INNER JOIN Locacao  ON Cliente.Id = Locacao.ClienteId WHERE Locacao.Devolvido = 0 and DataDevolucao < GETDATE()").ToListAsync();
-      List<Cliente> clientes = await context.Clientes.AsNoTracking().ToListAsync();
+      List<Cliente> clientes = await _context.Clientes.AsNoTracking().ToListAsync();
       return clientes;
     }
 
     [HttpGet]
     [Route("{id}")]
-    public async Task<ActionResult<Cliente>> Get([FromServices] StoreDataContext context, int id)
+    public async Task<ActionResult<Cliente>> Get(int id)
     {
-      Cliente clientes = await context.Clientes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+      if (id == 0)
+        return BadRequest();
+
+      Cliente clientes = await _context.Clientes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
+      if (clientes == null)
+        return NotFound();
+
       return clientes;
     }
 
     [HttpPost]
     [Route("")]
-    public async Task<ActionResult<Cliente>> Post([FromServices] StoreDataContext context, [FromBody] Cliente cliente)
+    public async Task<ActionResult<Cliente>> Post([FromBody] Cliente cliente)
     {
       if (ModelState.IsValid)
       {
-        context.Clientes.Add(cliente);
-        await context.SaveChangesAsync();
+        _context.Clientes.Add(cliente);
+        await _context.SaveChangesAsync();
         return cliente;
       }
       else
@@ -47,13 +58,35 @@ namespace Backend.Controllers
 
     [HttpPut]
     [Route("{id}")]
-    public async Task<ActionResult<Cliente>> Put([FromServices] StoreDataContext context, [FromBody] Cliente cliente, int id)
+    public async Task<ActionResult<Cliente>> Put([FromBody] Cliente cliente, int id)
     {
       if (ModelState.IsValid)
       {
-        context.Entry(cliente).State = EntityState.Modified;
-        await context.SaveChangesAsync();
-        return cliente;
+        if (id != cliente.Id)
+          return BadRequest();
+
+        if (!await ClienteExists(id))
+          return NotFound();
+
+        _context.Entry(cliente).State = EntityState.Modified;
+
+        try
+        {
+          await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+          if (!await ClienteExists(id))
+          {
+            return NotFound();
+          }
+          else
+          {
+            throw;
+          }
+        }
+
+        return NoContent();
       }
       else
       {
@@ -63,14 +96,21 @@ namespace Backend.Controllers
 
     [HttpDelete]
     [Route("{id}")]
-    public async Task<ActionResult<Cliente>> Delete([FromServices] StoreDataContext context, int id)
+    public async Task<ActionResult<Cliente>> Delete(int id)
     {
-      Cliente cliente = await context.Clientes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-      context.Clientes.Remove(cliente);
-      await context.SaveChangesAsync();
+      if (id == 0)
+        return BadRequest();
+
+      Cliente cliente = await _context.Clientes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
+      _context.Clientes.Remove(cliente);
+      await _context.SaveChangesAsync();
 
       return NoContent();
     }
 
+    private async Task<bool> ClienteExists(int id) => await _context.Clientes.AnyAsync(e => e.Id == id);
+
   }
+
 }
