@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { AppContext } from '../../contexts/AppContext'
-import AppContextType from '../../contexts/AppContextType'
+import { ClienteContext } from '../../contexts/Cliente/ClienteContext'
+import { ClienteContextType } from '../../contexts/Cliente/ClienteContextType'
 import Cliente from '../../models/Cliente'
 
 interface ClienteListItemProps {
@@ -9,7 +9,7 @@ interface ClienteListItemProps {
 }
 
 const ClienteListItem: React.FC<ClienteListItemProps> = ({ cliente }) => {
-  const { removeCliente } = useContext<AppContextType>(AppContext)
+  const { removeCliente } = useContext<ClienteContextType>(ClienteContext)
 
   const onRemove = (cliente: Cliente) => {
     removeCliente(cliente)
@@ -22,7 +22,7 @@ const ClienteListItem: React.FC<ClienteListItemProps> = ({ cliente }) => {
       <td className="uk-width-auto">{cliente.cpf}</td>
       <td className="uk-width-auto">{cliente.dataNascimento}</td>
       <td className="uk-width-auto">
-        <Link to={`/edit/${cliente.id}`}>
+        <Link to={`/clientes/edit/${cliente.id}`}>
           <button
             className="uk-icon-button uk-button-primary uk-margin-small-right"
             uk-icon="file-edit"

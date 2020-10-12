@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { AppContext } from '../../contexts/AppContext'
-import AppContextType from '../../contexts/AppContextType'
+import { ClienteContext } from '../../contexts/Cliente/ClienteContext'
+import { ClienteContextType } from '../../contexts/Cliente/ClienteContextType'
 import { useForm } from 'react-hook-form'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory, Link } from 'react-router-dom'
 
 interface EditClienteForm {
   id: number
@@ -16,7 +16,9 @@ interface EditClienteParams {
 }
 const EditCliente: React.FC = () => {
   let history = useHistory()
-  const { editCliente, clientes } = useContext<AppContextType>(AppContext)
+  const { editCliente, clientes } = useContext<ClienteContextType>(
+    ClienteContext
+  )
   const [selectedCliente, setSelectedCliente] = useState<EditClienteForm>({
     id: 0,
     nome: '',
@@ -37,12 +39,11 @@ const EditCliente: React.FC = () => {
   const onSubmit = (data: EditClienteForm, e: any) => {
     e.preventDefault()
     editCliente(parseInt(id), data)
-    history.push('/')
+    history.push('/clientes')
   }
 
   const handleOnChange = (userKey: string, value: string) => {
     setSelectedCliente({ ...selectedCliente, [userKey]: value })
-    console.log(userKey, '-', value)
   }
 
   return (
@@ -53,7 +54,7 @@ const EditCliente: React.FC = () => {
         <div className="uk-margin">
           <input
             className="uk-input"
-            type="text"
+            type="number"
             name="id"
             // disabled
             value={selectedCliente.id}
@@ -98,8 +99,16 @@ const EditCliente: React.FC = () => {
           {errors.nome && <span>Campo obrigatório</span>}
         </div>
 
-        <button className="uk-button uk-button-primary">Salvar</button>
-        <button className="uk-button uk-button-default">Cancelar</button>
+        <div className="uk-margin">
+          <button className="uk-button uk-button-primary uk-margin-small-right">
+            Salvar
+          </button>
+          <Link to="/clientes">
+            <button type="button" className="uk-button uk-button-default">
+              Cancelar
+            </button>
+          </Link>{' '}
+        </div>
       </fieldset>
     </form>
   )

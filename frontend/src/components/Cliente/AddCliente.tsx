@@ -1,7 +1,8 @@
 import React, { useContext } from 'react'
-import { AppContext } from '../../contexts/AppContext'
-import AppContextType from '../../contexts/AppContextType'
+import { ClienteContext } from '../../contexts/Cliente/ClienteContext'
+import { ClienteContextType } from '../../contexts/Cliente/ClienteContextType'
 import { useForm } from 'react-hook-form'
+import { useHistory } from 'react-router-dom'
 
 interface AddClienteForm {
   id: number
@@ -10,14 +11,14 @@ interface AddClienteForm {
   dataNascimento: string
 }
 
-const AddCliente: React.FC = () => {
-  const { addCliente } = useContext<AppContextType>(AppContext)
+export const AddCliente: React.FC = () => {
   const { register, handleSubmit, errors } = useForm<AddClienteForm>()
+  const { addCliente } = useContext<ClienteContextType>(ClienteContext)
+  let history = useHistory()
 
-  const onSubmit = (data: AddClienteForm, e: any) => {
-    addCliente(data)
-    e.target.reset()
-    window.location.href = '/clientes'
+  const onSubmit = (newCliente: AddClienteForm, e: any) => {
+    addCliente(newCliente)
+    history.push('/clientes')
   }
 
   return (
@@ -61,4 +62,3 @@ const AddCliente: React.FC = () => {
     </form>
   )
 }
-export default AddCliente

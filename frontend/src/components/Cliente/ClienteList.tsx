@@ -1,17 +1,17 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { AppContext } from '../../contexts/AppContext'
-import AppContextType from '../../contexts/AppContextType'
+import { ClienteContext } from '../../contexts/Cliente/ClienteContext'
+import { ClienteContextType } from '../../contexts/Cliente/ClienteContextType'
 import ClienteListItem from './ClienteListItem'
 
 const ClienteList: React.FC = () => {
-  const { clientes } = useContext<AppContextType>(AppContext)
+  const { clientes } = useContext<ClienteContextType>(ClienteContext)
 
   return (
     <>
       <nav className="uk-navbar">
         <div className="uk-navbar-left">
-          <Link to="/add">
+          <Link to="/clientes/add">
             <button
               className="uk-icon-button uk-button-primary uk-margin-small-right"
               uk-icon="plus"
