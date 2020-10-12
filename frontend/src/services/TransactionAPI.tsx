@@ -13,16 +13,18 @@ const create = (data: Cliente) => {
   return http.post('/clientes', data)
 }
 
-// const update = (id, data) => {
-//   return http.put(`/transaction/${id}`, data)
-// }
+const update = async (id: number, data: Cliente) => {
+  console.log(data, '', id)
+  return await http.put(`/clientes/${id}`, data)
+}
 
-const remove = (data: Cliente) => {
-  return http.get(`/clientes`)
+const remove = async (data: Cliente) => {
+  return await http.delete(`/clientes/${data.id}`)
 }
 
 export default {
   getAll,
   create,
+  update,
   remove,
 }

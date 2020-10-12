@@ -11,14 +11,6 @@ export const getAll = async (): Promise<Cliente[]> => {
   const json = (await response.data) as Cliente[]
 
   return json
-  // const data = localStorage.getItem(BOOK_STORE) || ''
-
-  // try {
-  //   const result = JSON.parse(data) as Cliente[]
-  //   return result
-  // } catch (error) {
-  //   return []
-  // }
 }
 
 export const create = async (data: Cliente) => {

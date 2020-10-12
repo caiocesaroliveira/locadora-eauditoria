@@ -1,8 +1,9 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import AppContext from '../contexts/AppContext'
+import AddCliente from './AddCliente'
+import EditCliente from './EditCliente'
 import ClienteList from './ClienteList'
-import FilmesList from './FilmesList'
 import Navbar from './Navbar'
 
 const App: React.FC = () => {
@@ -14,12 +15,9 @@ const App: React.FC = () => {
           <br />
           <div className="uk-container">
             <Switch>
-              <Route path="/clientes">
-                <ClienteList />
-              </Route>
-              <Route path="/filmes">
-                <FilmesList />
-              </Route>
+              <Route path="/" component={ClienteList} exact></Route>
+              <Route path="/add" component={AddCliente} exact></Route>
+              <Route path="/edit/:id" component={EditCliente} exact></Route>
             </Switch>
           </div>
         </Router>

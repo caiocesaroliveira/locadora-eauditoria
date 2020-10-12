@@ -3,6 +3,6 @@ export default class Cliente {
     public id: number,
     public nome: string,
     public cpf: string,
-    public dataNascimento: Date
+    public dataNascimento: string
   ) {}
 }

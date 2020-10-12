@@ -7,11 +7,12 @@ import api from '../services/TransactionAPI'
 export const AppContext = createContext<AppContextType>({
   clientes: [],
   addCliente: () => {},
+  editCliente: () => {},
   removeCliente: () => {},
 })
 
 const AppProvider = (props: any) => {
-  const [refresh, setRefresh] = useState<boolean>(true)
+  const [edit, setEdit] = useState<boolean>(false)
   const [clientes, setClientes] = useState<Cliente[]>([])
 
   useEffect(() => {
@@ -19,35 +20,29 @@ const AppProvider = (props: any) => {
       const response = await api.getAll()
       const json = (await response.data) as Cliente[]
 
-      console.log(json)
       setClientes(json)
     }
 
     getData()
-  }, [])
-
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     const response = await api.getAll()
-  //     const json = (await response.data) as Cliente[]
-
-  //     setClientes(json)
-  //   }
-
-  //   getData()
-  // }, [refresh])
+  }, [edit])
 
   const addCliente = (cliente: Cliente) => {
     api.create(cliente)
-    setRefresh(true)
   }
+
   const removeCliente = (cliente: Cliente) => {
     api.remove(cliente)
-    setRefresh(true)
+  }
+
+  const editCliente = (id: number, cliente: Cliente) => {
+    api.update(id, cliente)
+    setEdit(true)
   }
 
   return (
-    <AppContext.Provider value={{ clientes, addCliente, removeCliente }}>
+    <AppContext.Provider
+      value={{ clientes, addCliente, removeCliente, editCliente }}
+    >
       {props.children}
     </AppContext.Provider>
   )
