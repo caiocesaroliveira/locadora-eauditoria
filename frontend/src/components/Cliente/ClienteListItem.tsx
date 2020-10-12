@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { AppContext } from '../contexts/AppContext'
-import AppContextType from '../contexts/AppContextType'
-import Cliente from '../models/Cliente'
+import { AppContext } from '../../contexts/AppContext'
+import AppContextType from '../../contexts/AppContextType'
+import Cliente from '../../models/Cliente'
 
 interface ClienteListItemProps {
   cliente: Cliente

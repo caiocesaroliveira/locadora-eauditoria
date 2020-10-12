@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { AppContext } from '../contexts/AppContext'
-import AppContextType from '../contexts/AppContextType'
+import { AppContext } from '../../contexts/AppContext'
+import AppContextType from '../../contexts/AppContextType'
 import ClienteListItem from './ClienteListItem'
 
 const ClienteList: React.FC = () => {

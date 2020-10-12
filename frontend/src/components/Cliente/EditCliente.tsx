@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { AppContext } from '../contexts/AppContext'
-import AppContextType from '../contexts/AppContextType'
+import { AppContext } from '../../contexts/AppContext'
+import AppContextType from '../../contexts/AppContextType'
 import { useForm } from 'react-hook-form'
 import { useParams, useHistory } from 'react-router-dom'
 
