@@ -73,6 +73,7 @@ namespace Backend.Controllers
         try
         {
           await _context.SaveChangesAsync();
+          return cliente;
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -85,8 +86,6 @@ namespace Backend.Controllers
             throw;
           }
         }
-
-        return NoContent();
       }
       else
       {
