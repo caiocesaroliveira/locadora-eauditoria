@@ -8,7 +8,7 @@ const Navbar: React.FC = () => {
         <ul className="uk-navbar-nav">
           <li className="uk-active">
             {/* <a href="#">Clientes</a> */}
-            <Link to="/clientes">Clientes</Link>
+            <Link to="/customers">Clientes</Link>
           </li>
 
           <li>

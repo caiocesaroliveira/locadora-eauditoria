@@ -1,17 +1,17 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { ConsumerContext } from '../../contexts/Consumer/ConsumerContext'
-import { ConsumerContextType } from '../../contexts/Consumer/ConsumerContextType'
-import { ConsumerListItem } from './ConsumerListItem'
+import { CustomerContext } from '../../contexts/Customer/CustomerContext'
+import { CustomerContextType } from '../../contexts/Customer/CustomerContextType'
+import { CustomerListItem } from './CustomerListItem'
 
-export const ConsumerList: React.FC = () => {
-  const { consumers } = useContext<ConsumerContextType>(ConsumerContext)
+export const CustomerList: React.FC = () => {
+  const { customers } = useContext<CustomerContextType>(CustomerContext)
 
   return (
     <>
       <nav className="uk-navbar">
         <div className="uk-navbar-left">
-          <Link to="/clientes/add">
+          <Link to="/customers/add">
             <button
               className="uk-icon-button uk-button-primary uk-margin-small-right"
               uk-icon="plus"
@@ -24,7 +24,7 @@ export const ConsumerList: React.FC = () => {
       <table className="uk-table">
         <caption>
           <strong>Lista de Clientes</strong>{' '}
-          <span className="uk-badge">{consumers?.length}</span>
+          <span className="uk-badge">{customers?.length}</span>
         </caption>
         <thead>
           <tr>
@@ -37,11 +37,11 @@ export const ConsumerList: React.FC = () => {
         </thead>
 
         <tbody>
-          {consumers?.map(consumer => (
-            <ConsumerListItem
-              key={consumer.id}
-              consumer={consumer}
-            ></ConsumerListItem>
+          {customers?.map(customer => (
+            <CustomerListItem
+              key={customer.id}
+              customer={customer}
+            ></CustomerListItem>
           ))}
         </tbody>
       </table>

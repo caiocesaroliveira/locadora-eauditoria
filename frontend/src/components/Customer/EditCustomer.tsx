@@ -1,53 +1,53 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ConsumerContext } from '../../contexts/Consumer/ConsumerContext'
-import { ConsumerContextType } from '../../contexts/Consumer/ConsumerContextType'
+import { CustomerContext } from '../../contexts/Customer/CustomerContext'
+import { CustomerContextType } from '../../contexts/Customer/CustomerContextType'
 import { useForm } from 'react-hook-form'
 import { useParams, useHistory, Link } from 'react-router-dom'
 
-interface EditConsumerForm {
+interface EditCustomerForm {
   id: number
-  name: string
+  nome: string
   cpf: string
-  birthdate: string
+  dataNascimento: string
 }
 
-interface EditConsumerParams {
+interface EditCustomerParams {
   id: string
 }
-export const EditConsumer: React.FC = () => {
+export const EditCustomer: React.FC = () => {
   let history = useHistory()
-  const { editConsumer, consumers } = useContext<ConsumerContextType>(
-    ConsumerContext
+  const { editCustomer, customers } = useContext<CustomerContextType>(
+    CustomerContext
   )
-  const [selectedCliente, setSelectedCliente] = useState<EditConsumerForm>({
+  const [selectedCustomer, setSelectedCustomer] = useState<EditCustomerForm>({
     id: 0,
-    name: '',
+    nome: '',
     cpf: '',
-    birthdate: '',
+    dataNascimento: '',
   })
-  const { id } = useParams<EditConsumerParams>()
+  const { id } = useParams<EditCustomerParams>()
 
   useEffect(() => {
-    const selCliente = consumers.find(
+    const customer = customers.find(
       c => c.id === parseInt(id)
-    ) as EditConsumerForm
-    setSelectedCliente(selCliente)
+    ) as EditCustomerForm
+    setSelectedCustomer(customer)
   }, [])
 
-  const { register, handleSubmit, errors } = useForm<EditConsumerForm>()
+  const { register, handleSubmit, errors } = useForm<EditCustomerForm>()
 
-  const onSubmit = (data: EditConsumerForm, e: any) => {
+  const onSubmit = (data: EditCustomerForm, e: any) => {
     e.preventDefault()
-    editConsumer(parseInt(id), data)
-    history.push('/clientes')
+    editCustomer(parseInt(id), data)
+    history.push('/customers')
   }
 
   const handleOnChange = (userKey: string, value: string) => {
-    setSelectedCliente({ ...selectedCliente, [userKey]: value })
+    setSelectedCustomer({ ...selectedCustomer, [userKey]: value })
   }
 
   return (
-    <form onSubmit={handleSubmit<EditConsumerForm>(onSubmit)}>
+    <form onSubmit={handleSubmit<EditCustomerForm>(onSubmit)}>
       <fieldset className="uk-fieldset">
         <legend className="uk-legend">Novo Cliente</legend>
 
@@ -57,7 +57,7 @@ export const EditConsumer: React.FC = () => {
             type="number"
             name="id"
             // disabled
-            value={selectedCliente.id}
+            value={selectedCustomer.id}
             onChange={e => handleOnChange('id', e.target.value)}
             ref={register}
           />
@@ -66,13 +66,13 @@ export const EditConsumer: React.FC = () => {
           <input
             className="uk-input"
             type="text"
-            name="name"
+            name="nome"
             placeholder="Informe o nome"
-            value={selectedCliente.name}
+            value={selectedCustomer.nome}
             onChange={e => handleOnChange('nome', e.target.value)}
             ref={register({ required: true, minLength: 3 })}
           />
-          {errors.name && <span>Campo obrigatório</span>}
+          {errors.nome && <span>Campo obrigatório</span>}
         </div>
         <div className="uk-margin">
           <input
@@ -80,7 +80,7 @@ export const EditConsumer: React.FC = () => {
             type="text"
             name="cpf"
             placeholder="Informe o cpf"
-            value={selectedCliente.cpf}
+            value={selectedCustomer.cpf}
             onChange={e => handleOnChange('cpf', e.target.value)}
             ref={register}
           />
@@ -90,20 +90,20 @@ export const EditConsumer: React.FC = () => {
           <input
             className="uk-input"
             type="date"
-            name="birthdate"
+            name="dataNascimento"
             placeholder="Informe a data de nascimento"
-            value={selectedCliente.birthdate}
+            value={selectedCustomer.dataNascimento}
             onChange={e => handleOnChange('dataNascimento', e.target.value)}
             ref={register}
           />
-          {errors.birthdate && <span>Campo obrigatório</span>}
+          {errors.dataNascimento && <span>Campo obrigatório</span>}
         </div>
 
         <div className="uk-margin">
           <button className="uk-button uk-button-primary uk-margin-small-right">
             Salvar
           </button>
-          <Link to="/clientes">
+          <Link to="/customers">
             <button type="button" className="uk-button uk-button-default">
               Cancelar
             </button>
