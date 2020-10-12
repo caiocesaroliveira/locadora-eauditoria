@@ -1,28 +1,28 @@
 import React, { useContext } from 'react'
-import { ClienteContext } from '../../contexts/Cliente/ClienteContext'
-import { ClienteContextType } from '../../contexts/Cliente/ClienteContextType'
+import { ConsumerContext } from '../../contexts/Consumer/ConsumerContext'
+import { ConsumerContextType } from '../../contexts/Consumer/ConsumerContextType'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 
-interface AddClienteForm {
+interface AddConsumerForm {
   id: number
-  nome: string
+  name: string
   cpf: string
-  dataNascimento: string
+  birthdate: string
 }
 
-export const AddCliente: React.FC = () => {
-  const { register, handleSubmit, errors } = useForm<AddClienteForm>()
-  const { addCliente } = useContext<ClienteContextType>(ClienteContext)
+export const AddConsumer: React.FC = () => {
+  const { register, handleSubmit, errors } = useForm<AddConsumerForm>()
+  const { addConsumer } = useContext<ConsumerContextType>(ConsumerContext)
   let history = useHistory()
 
-  const onSubmit = (newCliente: AddClienteForm, e: any) => {
-    addCliente(newCliente)
-    history.push('/clientes')
+  const onSubmit = (newConsumer: AddConsumerForm, e: any) => {
+    addConsumer(newConsumer)
+    history.push('/consumers')
   }
 
   return (
-    <form onSubmit={handleSubmit<AddClienteForm>(onSubmit)}>
+    <form onSubmit={handleSubmit<AddConsumerForm>(onSubmit)}>
       <fieldset className="uk-fieldset">
         <legend className="uk-legend">Novo Cliente</legend>
 
@@ -30,11 +30,11 @@ export const AddCliente: React.FC = () => {
           <input
             className="uk-input"
             type="text"
-            name="nome"
+            name="name"
             placeholder="Informe o nome"
             ref={register({ required: true, minLength: 3 })}
           />
-          {errors.nome && <span>Campo obrigatório</span>}
+          {errors.name && <span>Campo obrigatório</span>}
         </div>
         <div className="uk-margin">
           <input
@@ -44,17 +44,17 @@ export const AddCliente: React.FC = () => {
             placeholder="Informe o cpf"
             ref={register}
           />
-          {errors.nome && <span>Campo obrigatório</span>}
+          {errors.cpf && <span>Campo obrigatório</span>}
         </div>
         <div className="uk-margin">
           <input
             className="uk-input"
             type="date"
-            name="dataNascimento"
+            name="birthdate"
             placeholder="Informe a data de nascimento"
             ref={register}
           />
-          {errors.nome && <span>Campo obrigatório</span>}
+          {errors.birthdate && <span>Campo obrigatório</span>}
         </div>
 
         <button className="uk-button uk-button-primary">Salvar</button>

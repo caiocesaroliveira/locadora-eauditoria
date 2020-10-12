@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { ClienteContext } from '../../contexts/Cliente/ClienteContext'
-import { ClienteContextType } from '../../contexts/Cliente/ClienteContextType'
-import ClienteListItem from './ClienteListItem'
+import { ConsumerContext } from '../../contexts/Consumer/ConsumerContext'
+import { ConsumerContextType } from '../../contexts/Consumer/ConsumerContextType'
+import { ConsumerListItem } from './ConsumerListItem'
 
-const ClienteList: React.FC = () => {
-  const { clientes } = useContext<ClienteContextType>(ClienteContext)
+export const ConsumerList: React.FC = () => {
+  const { consumers } = useContext<ConsumerContextType>(ConsumerContext)
 
   return (
     <>
@@ -24,7 +24,7 @@ const ClienteList: React.FC = () => {
       <table className="uk-table">
         <caption>
           <strong>Lista de Clientes</strong>{' '}
-          <span className="uk-badge">{clientes?.length}</span>
+          <span className="uk-badge">{consumers?.length}</span>
         </caption>
         <thead>
           <tr>
@@ -37,16 +37,14 @@ const ClienteList: React.FC = () => {
         </thead>
 
         <tbody>
-          {clientes?.map(cliente => (
-            <ClienteListItem
-              key={cliente.id}
-              cliente={cliente}
-            ></ClienteListItem>
+          {consumers?.map(consumer => (
+            <ConsumerListItem
+              key={consumer.id}
+              consumer={consumer}
+            ></ConsumerListItem>
           ))}
         </tbody>
       </table>
     </>
   )
 }
-
-export default ClienteList

@@ -1,12 +1,12 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { ClienteProvider } from '../contexts/Cliente/ClienteContext'
+import { ConsumerProvider } from '../contexts/Consumer/ConsumerContext'
 
 import Navbar from './Navbar'
 
-import { AddCliente } from './Cliente/AddCliente'
-import EditCliente from './Cliente/EditCliente'
-import ClienteList from './Cliente/ClienteList'
+import { AddConsumer } from './Cliente/AddConsumer'
+import { EditConsumer } from './Cliente/EditConsumer'
+import { ConsumerList } from './Cliente/ConsumerList'
 
 const App: React.FC = () => {
   return (
@@ -16,15 +16,19 @@ const App: React.FC = () => {
           <Navbar></Navbar>
           <br />
           <Switch>
-            <ClienteProvider>
-              <Route path="/clientes" component={ClienteList} exact></Route>
-              <Route path="/clientes/add" component={AddCliente} exact></Route>
+            <ConsumerProvider>
+              <Route path="/consumers" component={ConsumerList} exact></Route>
               <Route
-                path="/clientes/edit/:id"
-                component={EditCliente}
+                path="/consumers/add"
+                component={AddConsumer}
                 exact
               ></Route>
-            </ClienteProvider>
+              <Route
+                path="/consumers/edit/:id"
+                component={EditConsumer}
+                exact
+              ></Route>
+            </ConsumerProvider>
           </Switch>
         </div>
       </Router>
