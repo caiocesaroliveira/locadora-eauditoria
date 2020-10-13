@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { CustomerContext } from '../../contexts/Customer/CustomerContext'
 import { CustomerContextType } from '../../contexts/Customer/CustomerContextType'
 import { useForm } from 'react-hook-form'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 interface AddCustomerForm {
   id: number
@@ -25,7 +25,6 @@ export const AddCustomer: React.FC = () => {
     <form onSubmit={handleSubmit<AddCustomerForm>(onSubmit)}>
       <fieldset className="uk-fieldset">
         <legend className="uk-legend">Novo Cliente</legend>
-
         <div className="uk-margin">
           <input
             className="uk-input"
@@ -56,8 +55,14 @@ export const AddCustomer: React.FC = () => {
           />
           {errors.dataNascimento && <span>Campo obrigatório</span>}
         </div>
-
-        <button className="uk-button uk-button-primary">Salvar</button>
+        <button className="uk-button uk-button-primary uk-margin-small-right">
+          Salvar
+        </button>
+        <Link to="/customers">
+          <button type="button" className="uk-button uk-button-default">
+            Cancelar
+          </button>
+        </Link>{' '}
       </fieldset>
     </form>
   )

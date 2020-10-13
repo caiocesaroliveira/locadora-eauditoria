@@ -42,13 +42,13 @@ namespace Backend.Controllers
 
     [HttpPost]
     [Route("")]
-    public async Task<ActionResult<Filme>> Post([FromBody] Filme cliente)
+    public async Task<ActionResult<Filme>> Post([FromBody] Filme filme)
     {
       if (ModelState.IsValid)
       {
-        _context.Filmes.Add(cliente);
+        _context.Filmes.Add(filme);
         await _context.SaveChangesAsync();
-        return cliente;
+        return filme;
       }
       else
       {
@@ -58,21 +58,22 @@ namespace Backend.Controllers
 
     [HttpPut]
     [Route("{id}")]
-    public async Task<ActionResult<Filme>> Put([FromBody] Filme cliente, int id)
+    public async Task<ActionResult<Filme>> Put([FromBody] Filme filme, int id)
     {
       if (ModelState.IsValid)
       {
-        if (id != cliente.Id)
+        if (id != filme.Id)
           return BadRequest();
 
         if (!await FilmeExists(id))
           return NotFound();
 
-        _context.Entry(cliente).State = EntityState.Modified;
+        _context.Entry(filme).State = EntityState.Modified;
 
         try
         {
           await _context.SaveChangesAsync();
+          return filme;
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -85,8 +86,6 @@ namespace Backend.Controllers
             throw;
           }
         }
-
-        return NoContent();
       }
       else
       {
@@ -101,9 +100,9 @@ namespace Backend.Controllers
       if (id == 0)
         return BadRequest();
 
-      Filme cliente = await _context.Filmes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+      Filme filme = await _context.Filmes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
-      _context.Filmes.Remove(cliente);
+      _context.Filmes.Remove(filme);
       await _context.SaveChangesAsync();
 
       return NoContent();

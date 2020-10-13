@@ -15,17 +15,21 @@ interface EditCustomerParams {
   id: string
 }
 export const EditCustomer: React.FC = () => {
-  let history = useHistory()
-  const { editCustomer, customers } = useContext<CustomerContextType>(
-    CustomerContext
-  )
   const [selectedCustomer, setSelectedCustomer] = useState<EditCustomerForm>({
     id: 0,
     nome: '',
     cpf: '',
     dataNascimento: '',
   })
+
+  const { editCustomer, customers } = useContext<CustomerContextType>(
+    CustomerContext
+  )
+
+  const { register, handleSubmit, errors } = useForm<EditCustomerForm>()
+
   const { id } = useParams<EditCustomerParams>()
+  let history = useHistory()
 
   useEffect(() => {
     const customer = customers.find(
@@ -34,14 +38,11 @@ export const EditCustomer: React.FC = () => {
     setSelectedCustomer(customer)
   }, [])
 
-  const { register, handleSubmit, errors } = useForm<EditCustomerForm>()
-
   const onSubmit = (data: EditCustomerForm, e: any) => {
     e.preventDefault()
     editCustomer(parseInt(id), data)
     history.push('/customers')
   }
-
   const handleOnChange = (userKey: string, value: string) => {
     setSelectedCustomer({ ...selectedCustomer, [userKey]: value })
   }
